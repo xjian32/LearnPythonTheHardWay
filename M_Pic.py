@@ -32,10 +32,15 @@ for a in a_all:
 	
 	for page in range(1, int(max_span)+1):
 		page_url = href + '/' + str(page)
+		#print(page_url)
+
+		#获取图片
 		img_html = requests.get(page_url, headers = headers)
 		img_Soup = BeautifulSoup(img_html.text, 'lxml')
-		img_url = img_Soup.find('div', class_ = 'main-image').find('img')['src']
+		img_url = img_Soup.find('div', class_='main-image').find('img')['src']
 		
+		#print(img_url)
+
 		name = img_url[-9:-4]  #去URL倒数第四位至第九位作为图片的名字
 		img = requests.get(img_url, headers = headers)
 
