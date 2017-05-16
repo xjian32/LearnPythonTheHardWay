@@ -7,7 +7,7 @@ import os
 class mzitu():
 
 	def all_url(self, url):
-		html = self.requests(url)        #调用requests函数把套图地址传进去，返回一个response
+		html = self.request(url)        #调用requests函数把套图地址传进去，返回一个response
 		all_a = BeautifulSoup(html.text, 'lxml').find('div', class_='all').find_all('a')
 		for a in all_a:
 			title = a.get_text()
@@ -18,8 +18,8 @@ class mzitu():
 			self.html(href)                       #调用html函数，传递href参数
 
 	#处理套图地址，获得图片的页面地址
-	def html(self, html):
-		html = self.requests(href)
+	def html(self, href):
+		html = self.request(href)
 		#查找所有<span>标签,获取第十个标签中的文本，也就是最后一个页面
 		max_span = BeautifulSoup(html.text, 'lxml').find('div', class_='pagenavi').find_all('span')[-2].get_text()
 
@@ -30,15 +30,15 @@ class mzitu():
 
 	#处理图片页面地址，获得图片的实际地址
 	def img(self, page_url):
-		img_html = self.requests(page_url)
-		img_url = BeautifulSoup(img_html, 'lxml').find('div', class_='main-image').find('img')['src']
+		img_html = self.request(page_url)
+		img_url = BeautifulSoup(img_html.text, 'lxml').find('div', class_='main-image').find('img')['src']
 		self.save(img_url)
 
 
-	#保存图片
+	#保存图片\
 	def save(self, img_url):
 		name = img_url[-9:-4]          #截取图片地址的-4位到-9位作为名字
-		img = self.requests(img_url)
+		img = self.request(img_url)
 		f = open(name + '.jpg', 'ab')
 		f.write(img.content)
 		f.close()
@@ -46,7 +46,7 @@ class mzitu():
 
 	#创建文件夹
 	def mkdir(self, path):
-		path = path.strip()
+		path = path.strip()            #移除字符串头尾指定的字符（默认为空格）
 		isExists = os.path.exists(os.path.join("D:\mzitu", path))
 
 		if not isExists:
@@ -66,5 +66,6 @@ class mzitu():
 		return content
 
 
-Mzitu = mzitu()
-Mzitu.all_url('http://www.mzitu.com/all')
+if __name__ == '__main__':
+	Mzitu = mzitu()
+	Mzitu.all_url('http://www.mzitu.com/all')
