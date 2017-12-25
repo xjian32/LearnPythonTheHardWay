@@ -68,4 +68,4 @@ class mzitu():
 
 if __name__ == '__main__':
 	Mzitu = mzitu()
-	Mzitu.all_url('http://www.mzitu.com/all')
+	Mzitu.all_url('http://......')
